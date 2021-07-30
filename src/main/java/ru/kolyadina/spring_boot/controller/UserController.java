@@ -13,6 +13,7 @@ import ru.kolyadina.spring_boot.service.RoleService;
 import ru.kolyadina.spring_boot.service.UserService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -20,12 +21,10 @@ import java.util.Set;
 public class UserController {
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping(value = "/")
@@ -36,51 +35,19 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping(value = "/user")
-    public String getUserInfo(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("user", user);
-        return "userPanel";
-    }
+//    @GetMapping(value = "/user")
+//    public String getUserInfo(@AuthenticationPrincipal User user, Model model){
+//        model.addAttribute("user", user);
+//        return "userPanel";
+//    }
 
-    @GetMapping(value = "/admin")
-    public String getAllUsers(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
-        model.addAttribute("allUsers", userService.getAllUsers());
-        return "adminPanel";
-    }
 
-    @GetMapping(value = "/admin/new")
-    public String newUser(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("userAdmin",user);
-        return "newUser";
-    }
 
-    @PostMapping(value = "/admin/add")
-    private String addUser(@ModelAttribute User user, @RequestParam(value = "checkBoxRoles") String[] checkBoxRoles) {
-        Set<Role> roles = new HashSet<>();
-        for (String role : checkBoxRoles) {
-            roles.add(roleService.getRoleByName(role));
-        }
-        user.setRoles(roles);
-        userService.addUser(user);
-        return "redirect:/admin";
-    }
 
-    @PutMapping(value = "/admin/edit")
-    public String updateUser(@ModelAttribute User user, @RequestParam(value = "checkBoxRoles") String[] checkBoxRoles) {
-        Set<Role> roles = new HashSet<>();
-        for (String role : checkBoxRoles) {
-            roles.add(roleService.getRoleByName(role));
-        }
-        user.setRoles(roles);
-        userService.updateUser(user);
-        return "redirect:/admin";
-    }
-
-    @DeleteMapping(value = "/remove/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
+//    @GetMapping(value = "/admin")
+//    public String getAllUsers(@AuthenticationPrincipal User user, Model model) {
+//        model.addAttribute("user", user);
+//        model.addAttribute("allUsers", userService.getAllUsers());
+//        return "adminPanel";
+//    }
 }

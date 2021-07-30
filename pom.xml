@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>ru.kolyadina</groupId>
-    <artifactId>spring_bootstrap</artifactId>
+    <artifactId>spring_REST_JS</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring_bootstrap</name>
+    <name>spring_REST_JS</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
