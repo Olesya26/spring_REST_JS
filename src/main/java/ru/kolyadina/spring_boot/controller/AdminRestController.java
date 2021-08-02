@@ -1,6 +1,7 @@
 package ru.kolyadina.spring_boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolyadina.spring_boot.model.Role;
 import ru.kolyadina.spring_boot.model.User;
@@ -39,8 +40,8 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.addUser(user));
     }
 
     @PutMapping("/users")

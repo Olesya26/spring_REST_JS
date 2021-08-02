@@ -58,8 +58,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="/admin">Admin</a>
                         </li>
-                    </ul>
-                    <ul class="nav flex-column nav-pills">
                         <li class="nav-item">
                             <a class="nav-link" href="/user">User</a>
                         </li>
@@ -73,52 +71,86 @@
                 <h1>Admin panel</h1>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/admin">Users table</a>
+                        <a class="nav-link active" role="tab" id="usersTableActive" data-toggle="tab" href="#usersTable"
+                           aria-controls="usersTable" aria-selected="true">Users table</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/new">New User</a>
+                        <a class="nav-link" role="tab" id="newUserActive" data-toggle="tab" href="#newUser"
+                           aria-controls="newUser" aria-selected="false">New User</a>
                     </li>
                 </ul>
-                <div class="card bg-white">
-                    <h5 class="card-header">All user</h5>
-                    <div class="card-body">
-                        <table class="table table-light table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
-                                <th></th><th></th>
+                <div class="tab-content" >
+                        <div id="usersTable" class="tab-pane fade show active"  aria-labelledby="usersTableActive"
+                        style="border: 1px double gainsboro">
+                        <h5 class="card-header">All user</h5>
+                            <div class="table-responsive bg-white">
+                                <table class="table table-light table-striped" >
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Edit</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tableAllUsers" >
+                                 <!--               JS             -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="user : ${allUsers}">
-                                <td th:text="${user.getId()}">ID</td>
-                                <td th:text="${user.getFirstName()}">First Name</td>
-                                <td th:text="${user.getLastName()}">Last Name</td>
-                                <td th:text="${user.getAge()}">Age</td>
-                                <td th:text="${user.getEmail()}">Email</td>
-                                <td>
-                                    <span th:each="role : ${user.getRoles()}" th:text="${role} + ' '"></span>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#edit"
-                                            th:attr="data-target='#edit'+${user.getId()}">Edit
-                                    </button>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete"
-                                            th:attr="data-target='#delete' + ${user.getId()}">Delete
-                                    </button>
-                                </td>
+
+                        <div id="newUser" class="tab-pane fade" aria-labelledby="newUserActive"
+                             style="border: 1px double gainsboro">
+                            <h5 class="card-header">Add new user</h5>
+                                <form>
+                                        <div class="form-group text-center font-weight-bold">
+                                            <label for="firstName" class="col-form-label-sm">First name
+                                                <input class="form-control form-control-sm" type="text" id="firstName"
+                                                       name="firstName" placeholder="First name" style="max-height: 28px">
+                                            </label>
+                                            <br>
+                                            <label for="lastName" class="col-form-label-sm">Last name
+                                                <input class="form-control form-control-sm" type="text" id="lastName"
+                                                       name="lastName" placeholder="Last name" style="max-height: 28px">
+                                            </label>
+                                            <br>
+                                            <label for="age" class="col-form-label-sm">Age
+                                                <input class="form-control form-control-sm" type="number" id="age"
+                                                       name="age" placeholder="Age" style="max-height: 28px">
+                                            </label>
+                                            <br>
+                                            <label for="email" class="col-form-label-sm">Email
+                                                <input class="form-control form-control-sm" type="text" id="email" name="email"
+                                                       placeholder="Email" style="max-height: 28px">
+                                            </label>
+                                            <br>
+                                            <label for="passwordUser" class="col-form-label-sm">Password
+                                                <input class="form-control form-control-sm" type="password" id="passwordUser"
+                                                       name="passwordUser" placeholder="Password" style="max-height: 28px">
+                                            </label>
+                                            <br>
+                                            <label>Role
+                                                <select class="form-control form-control-sm" size="2" name="checkBoxRoles"
+                                                       id="rolesUser" style="max-height: 42px">
+                                                    <option>ADMIN</option>
+                                                    <option>USER</option>
+                                                </select>
+                                            </label>
+                                            <br>
+                                            <button class="btn btn-success" onclick="addNewUser()">Add new user</button>
+                                    </div>
+                                </form>
+                        </div>
+                </div>
+
+
                                 <!--                            Edit                                    -->
-                                <td>
                                 <div class="modal fade" th:id="edit + ${user.getId()}" aria-hidden="true" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -184,9 +216,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                </td>
+
                                 <!--                            Delete                                   -->
-                                <td>
+
                                 <div class="modal fade" th:id="delete + ${user.getId()}" aria-hidden="true" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -246,11 +278,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 </div>
             </div>
@@ -262,7 +289,8 @@
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+
+    <script src="app.js"></script>
 
     </body>
 </html>
