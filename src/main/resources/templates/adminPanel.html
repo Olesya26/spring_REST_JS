@@ -33,6 +33,7 @@
             width: 200px
         }
     </style>
+    <link rel="shortcut icon" href="/image/spring.png" type="image/png">
     <title>Admin page</title>
 </head>
     <body class="bg-light">
@@ -104,54 +105,55 @@
                             </div>
                         </div>
 
-
-                        <div id="newUser" class="tab-pane fade" aria-labelledby="newUserActive"
-                             style="border: 1px double gainsboro">
-                            <h5 class="card-header">Add new user</h5>
-                                <form>
-                                        <div class="form-group text-center font-weight-bold">
-                                            <label for="firstName" class="col-form-label-sm">First name
-                                                <input class="form-control form-control-sm" type="text" id="firstName"
-                                                       name="firstName" placeholder="First name" style="max-height: 28px">
-                                            </label>
-                                            <br>
-                                            <label for="lastName" class="col-form-label-sm">Last name
-                                                <input class="form-control form-control-sm" type="text" id="lastName"
-                                                       name="lastName" placeholder="Last name" style="max-height: 28px">
-                                            </label>
-                                            <br>
-                                            <label for="age" class="col-form-label-sm">Age
-                                                <input class="form-control form-control-sm" type="number" id="age"
-                                                       name="age" placeholder="Age" style="max-height: 28px">
-                                            </label>
-                                            <br>
-                                            <label for="email" class="col-form-label-sm">Email
-                                                <input class="form-control form-control-sm" type="text" id="email" name="email"
-                                                       placeholder="Email" style="max-height: 28px">
-                                            </label>
-                                            <br>
-                                            <label for="passwordUser" class="col-form-label-sm">Password
-                                                <input class="form-control form-control-sm" type="password" id="passwordUser"
-                                                       name="passwordUser" placeholder="Password" style="max-height: 28px">
-                                            </label>
-                                            <br>
-                                            <label>Role
-                                                <select class="form-control form-control-sm" size="2" name="checkBoxRoles"
-                                                       id="rolesUser" style="max-height: 42px">
-                                                    <option>ADMIN</option>
-                                                    <option>USER</option>
-                                                </select>
-                                            </label>
-                                            <br>
-                                            <button class="btn btn-success" onclick="addNewUser()">Add new user</button>
-                                    </div>
-                                </form>
-                        </div>
+                    <div id="newUser" class="tab-pane fade" aria-labelledby="newUserActive"
+                         style="border: 1px double gainsboro">
+                        <h5 class="card-header">Add new user</h5>
+                        <form>
+                            <div class="form-group text-center font-weight-bold">
+                                <label for="addFirstName" class="col-form-label-sm">First name
+                                    <input class="form-control form-control-sm" type="text" id="addFirstName"
+                                           name="firstName" placeholder="First name" style="max-height: 28px">
+                                </label>
+                                <br>
+                                <label for="addLastName" class="col-form-label-sm">Last name
+                                    <input class="form-control form-control-sm" type="text" id="addLastName"
+                                           name="lastName" placeholder="Last name" style="max-height: 28px">
+                                </label>
+                                <br>
+                                <label for="addAge" class="col-form-label-sm">Age
+                                    <input class="form-control form-control-sm" type="number" id="addAge"
+                                           name="age" placeholder="Age" style="max-height: 28px">
+                                </label>
+                                <br>
+                                <label for="addEmail" class="col-form-label-sm">Email
+                                    <input class="form-control form-control-sm" type="text" id="addEmail" name="email"
+                                           placeholder="Email" style="max-height: 28px">
+                                </label>
+                                <br>
+                                <label for="addPasswordUser" class="col-form-label-sm">Password
+                                    <input class="form-control form-control-sm" type="password" id="addPasswordUser"
+                                           name="passwordUser" placeholder="Password" style="max-height: 28px">
+                                </label>
+                                <br>
+                                <label>Role
+                                    <select class="form-control form-control-sm" size="2"  name="checkBoxRoles"
+                                            id="addRole" style="max-height: 42px">
+                                        <option th:each="role : ${roles}"
+                                                th:value="${role.getId()}"
+                                                th:text="${role.getName()}">
+                                        </option>
+                                    </select>
+                                </label>
+                                <br>
+                                <button class="btn btn-success" onclick="addNewUser()">Add new user</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
 
                                 <!--                            Edit                                    -->
-                                <div class="modal fade" th:id="edit + ${user.getId()}" aria-hidden="true" role="dialog">
+                                <div class="modal fade" id="edit" aria-hidden="true" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -163,43 +165,45 @@
                                             <div class="modal-body">
                                                 <div style="text-align: center;">
                                                     <div class="row justify-content-center align-items-center">
-                                                        <form th:action="@{/admin/edit}" th:object="${user}" th:method="PUT"
-                                                              th:id="editForm + ${user.getId()}">
+                                                        <form th:method="PUT">
                                                             <div class="form-group text-center font-weight-bold">
-                                                                <label>ID
+                                                                <label for="editId">ID
                                                                 <input type="number" class="form-control form-control-sm"
-                                                                       th:value="${user.getId()}" name="id" readonly>
+                                                                       name="id" id="editId" readonly>
                                                                 </label>
                                                                 <br>
-                                                                <label>First name
+                                                                <label for="editFirstName">First name
                                                                 <input class="form-control form-control-sm" type="text"
-                                                                       th:value="${user.getFirstName()}" name="firstName">
+                                                                        name="firstName" id="editFirstName">
                                                                 </label>
                                                                 <br>
-                                                                <label>Last name
+                                                                <label for="editLastName">Last name
                                                                 <input type="text" class="form-control form-control-sm"
-                                                                       th:value="${user.getLastName()}" name="lastName" >
+                                                                        name="lastName" id="editLastName">
                                                                 </label>
                                                                 <br>
-                                                                <label>Age
+                                                                <label for="editAge">Age
                                                                 <input type="number" class="form-control form-control-sm"
-                                                                       th:value="${user.getAge()}" name="age">
+                                                                        name="age" id="editAge">
                                                                 </label>
                                                                 <br>
-                                                                <label>Email
+                                                                <label for="editEmail">Email
                                                                 <input type="email" class="form-control form-control-sm"
-                                                                       th:value="${user.getEmail()}" name="email">
+                                                                        name="email" id="editEmail">
                                                                 </label>
                                                                 <br>
-                                                                <label>Password
+                                                                <label for="editPassword">Password
                                                                 <input type="password" class="form-control form-control-sm"
-                                                                      name="passwordUser">
+                                                                      name="passwordUser" id="editPassword">
                                                                 </label>
                                                                 <br>
                                                                 <label>Role
-                                                                <select class="form-control form-control-sm" size="2" name="checkBoxRoles">
-                                                                    <option>ADMIN</option>
-                                                                    <option>USER</option>
+                                                                <select class="form-control form-control-sm" size="2" name="checkBoxRoles"
+                                                                id="editRole">
+                                                                    <option th:each="role : ${roles}"
+                                                                            th:value="${role.getId()}"
+                                                                            th:text="${role.getName()}">
+                                                                    </option>
                                                                 </select>
                                                                 </label>
                                                             </div>
@@ -210,7 +214,7 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Close</button>
-                                                <button  type="submit" class="btn btn-primary" th:form="editForm + ${user.getId()}"
+                                                <button onclick="editButton()" type="submit" class="btn btn-primary"
                                                         >Edit</button>
                                             </div>
                                         </div>
@@ -219,7 +223,7 @@
 
                                 <!--                            Delete                                   -->
 
-                                <div class="modal fade" th:id="delete + ${user.getId()}" aria-hidden="true" role="dialog">
+                                <div class="modal fade" id="delete" aria-hidden="true" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -229,37 +233,36 @@
                                             <div class="modal-body">
                                                 <div style="text-align: center;">
                                                     <div class="row justify-content-center align-items-center">
-                                                        <form th:action="@{/remove/{id}(id=${user.getId()})}" th:object="${user}"
-                                                              th:method="delete" th:id="deleteForm + ${user.getId()}">
+                                                        <form>
                                                             <div class="form-group text-center font-weight-bold">
-                                                                <label >ID
+                                                                <label for="deleteId" >ID
                                                                 <input type="number" class="form-control form-control-sm"
-                                                                       th:value="${user.getId()}"  name="id" readonly>
+                                                                        name="id" id="deleteId" readonly>
                                                                 </label>
                                                                 <br>
-                                                                <label>First name
+                                                                <label for="deleteFirstName">First name
                                                                 <input type="text" class="form-control form-control-sm"
-                                                                       th:value="${user.getFirstName()}" name="firstName" readonly>
+                                                                        name="firstName" id="deleteFirstName" readonly>
                                                                 </label>
                                                                 <br>
-                                                                <label>Last name
+                                                                <label for="deleteLastName">Last name
                                                                 <input type="text" class="form-control form-control-sm"
-                                                                       th:value="${user.getLastName()}"  name="lastName" readonly>
+                                                                        name="lastName" id="deleteLastName" readonly>
                                                                 </label>
                                                                 <br>
-                                                                <label>Age
+                                                                <label for="deleteAge">Age
                                                                 <input type="number" class="form-control form-control-sm"
-                                                                       th:value="${user.getAge()}" name="age" readonly>
+                                                                       name="age" id="deleteAge" readonly>
                                                                 </label>
                                                                 <br>
-                                                                <label>Email
+                                                                <label for="deleteEmail">Email
                                                                 <input type="email" class="form-control form-control-sm"
-                                                                       th:value="${user.getEmail}" name="email" readonly>
+                                                                        name="email" id="deleteEmail" readonly>
                                                                 </label>
                                                                 <br>
-                                                                <label>Role
+                                                                <label for="deleteRole">Role
                                                                 <select class="form-control form-control-sm" size="2"
-                                                                        name="checkBoxRoles" readonly>
+                                                                        name="checkBoxRoles" id="deleteRole" readonly>
                                                                     <option>ADMIN</option>
                                                                     <option>USER</option>
                                                                 </select>
@@ -272,7 +275,7 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-danger" th:form="deleteForm +${user.getId()}">
+                                                <button onclick="deleteButton()" type="submit" class="btn btn-danger" >
                                                     Delete</button>
                                             </div>
                                         </div>
@@ -290,7 +293,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <script src="app.js"></script>
+    <script src="/js/app.js"></script>
 
     </body>
 </html>

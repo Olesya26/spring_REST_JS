@@ -13,13 +13,14 @@
            margin: auto;
         }
     </style>
+    <link rel="shortcut icon" href="/image/spring.png" type="image/png">
     <title>Login page</title>
 </head>
     <body class="bg-white">
         <div class="container text-left mt-5" >
 
             <form class="form-signin" method="post" action="/">
-                <h4 class="form-signin-heading font-weight-bold">Please sing in</h4>
+                <h4 class="form-signin-heading font-weight-bold">Please sign in</h4>
                     <div th:if="${error}">
                         <div class="alert alert-danger" role="alert">
                             Invalid Email or Password!
@@ -34,9 +35,9 @@
                     <input type="text" name="email" id="email" class="form-control"
                            placeholder="Email address" required autofocus>
                     <label for="passwordUser" class="sr-only"></label>
-                    <input type="text" name="passwordUser" id="passwordUser" class="form-control"
+                    <input type="password" name="passwordUser" id="passwordUser" class="form-control"
                            placeholder="Password" required>
-                    <button class="btn btn-lg btn-primary btn-block" style="margin-top: 10px" >Sing in</button>
+                    <button class="btn btn-lg btn-primary btn-block" style="margin-top: 10px" >Sign in</button>
             </form>
         </div>
     </body>

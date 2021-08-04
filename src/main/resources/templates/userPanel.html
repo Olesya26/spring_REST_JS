@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
 
@@ -32,6 +33,7 @@
             left: -2px;
         }
     </style>
+    <link rel="shortcut icon" href="/image/spring.png" type="image/png">
     <title>User page</title>
 </head>
     <body class="bg-light">
@@ -54,6 +56,11 @@
                     <br><br><br>
                     <div class="fix_block">
                         <ul class="nav flex-column nav-pills">
+                            <div sec:authorize="hasAuthority('ADMIN')">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin">Admin</a>
+                                </li>
+                            </div>
                             <li class="nav-item">
                                 <a class="nav-link active" href="/user">User</a>
                             </li>

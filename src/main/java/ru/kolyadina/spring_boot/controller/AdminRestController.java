@@ -1,6 +1,7 @@
 package ru.kolyadina.spring_boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolyadina.spring_boot.model.Role;
@@ -40,8 +41,8 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.addUser(user));
+    public User addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 
     @PutMapping("/users")
@@ -50,8 +51,8 @@ public class AdminRestController {
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
-        return String.format("User ID %d deleted", id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
