@@ -1,5 +1,4 @@
 let userInfo = $('#tableAllUsers')
-let userRoles = [];
 
 getAllUser()
 
@@ -9,18 +8,13 @@ function getAllUser() {
         if (response.ok) {
             response.json().then((users) => {
                 users.forEach((user) => {
+                    console.log(user)
                     addUserForTable(user)
                 });
             });
         } else {
             console.error(response.statusText + response.status)
         }
-    });
-
-    fetch("/api/roles").then((response) => {
-        response.json().then((roles) => {
-            userRoles = roles;
-        });
     });
 }
 
@@ -44,29 +38,45 @@ function addUserForTable(user) {
 }
 
 function addNewUser() {
+    let roleList = ()=> {
+        let array = []
+        let options = document.querySelector('#addRole').options
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].selected) {
+                let role = {id: options[i].value, name: options[i].text}
+                array.push(role)
+            }
+        }
+        return array;
+    }
+
     let user = {
-        firstName: $('#addFirstName').val(),
-        lastName: $('#addLastName').val(),
-        age: parseInt($('#addAge').val()),
-        email: $('#addEmail').val(),
-        passwordUser: $('#addPasswordUser').val(),
-        roles: $('#addRole').val().map(id => parseInt(id))
+        firstName: document.getElementById("addFirstName").value,
+        lastName: document.getElementById("addLastName").value,
+        age: document.getElementById("addAge").value,
+        email: document.getElementById("addEmail").value,
+        passwordUser: document.getElementById("addPasswordUser").value,
+        roles: roleList()
     }
 
     console.log(user);
 
-    fetch("/api/users", {
-        method: "POST", dataType: 'json',
-        contentType: 'application/json; charset=utf-8', data: JSON.stringify(user)
-    })
-        .then((response) => {
-            response.json().then((addUser) => {
-                console.log(addUser)
-                userInfo.empty()
-                getAllUser()
-            })
-            $('#usersTableActive').tab('show');
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json; charset=utf-8');
+    let request = new Request('/api/users', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(user)
+    });
+    console.log(user);
+    fetch(request).then((response) => {
+        response.json().then((userAdd) => {
+            userInfo.empty();
+            getAllUser();
+            console.log(userAdd)
         })
+        $('#usersTableActive').tab('show');
+    })
 }
 
 function editUserById(id) {
@@ -87,24 +97,41 @@ function editUserById(id) {
 }
 
 function editButton() {
-    let editUser = {
-        id: $("input[name='id']").val(),
-        firstName: $("input[name='firstName']").val(),
-        lastName: $("input[name='lastName']").val(),
-        age: $("input[name='age']").val(),
-        email: $("input[name='email']").val(),
-        passwordUser: $("input[name='passwordUser']").val(),
-        roles: $("input[name='checkBoxRoles']").val()
+    let roleList = ()=>{
+        let array = []
+        let options = document.querySelector('#editRole').options
+        for (let i =0; i<options.length; i++){
+            if(options[i].selected){
+                let role = {id: options[i].value, name: options[i].text}
+                array.push(role)
+            }
+        }
+        return array;
     }
+
+   let editUser = {
+       id: document.getElementById("editId").value,
+       firstName: document.getElementById("editFirstName").value,
+       lastName: document.getElementById("editLastName").value,
+       age: document.getElementById("editAge").value,
+       email: document.getElementById("editEmail").value,
+       passwordUser: document.getElementById("editPassword").value,
+       roles: roleList()
+   }
 
     console.log(editUser);
 
-    fetch("/api/users", {
-        method: "PUT", dataType: 'json',
-        contentType: 'application/json; charset=utf-8', data: JSON.stringify(editUser)
-    })
-        .then((response) => {
-            response.json().then((user) => {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json; charset=utf-8');
+    let request = new Request("api/users" , {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(editUser),
+    });
+
+    fetch(request).then((response) => {
+            response.json().then((userEdit) => {
+                console.log(userEdit);
                 userInfo.empty();
                 getAllUser();
             })
@@ -112,8 +139,8 @@ function editButton() {
         });
 }
 
-async function deleteUserById(id) {
-    await fetch("/api/users/" + id, {method: "GET", dataType: 'json',})
+function deleteUserById(id) {
+    fetch("/api/users/" + id, {method: "GET", dataType: 'json',})
         .then((response) => {
             response.json().then((user) => {
                 $('#deleteId').val(user.id)
@@ -127,13 +154,10 @@ async function deleteUserById(id) {
         })
 }
 
-async function deleteButton() {
+function deleteButton() {
     let userId = $('#deleteId').val();
-    await fetch("/api/users/" + userId, {method: "DELETE"})
+    fetch("/api/users/" + userId, {method: "DELETE"})
         .then((response) => {
-            response.json().then(() => {
-                console.log('Delete user id: ' + userId);
-            })
             userInfo.empty();
             getAllUser();
             $('#delete').modal('hide');

@@ -25,11 +25,6 @@ public class AdminRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/roles")
-    public List<Role> getAllRoles() {
-        return roleService.getAllRole();
-    }
-
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -51,8 +46,7 @@ public class AdminRestController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable long id) {
+    public void deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
