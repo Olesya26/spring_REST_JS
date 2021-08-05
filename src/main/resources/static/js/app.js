@@ -43,27 +43,17 @@ function addUserForTable(user) {
     )
 }
 
-function getUserRolesForAdd() {
-    let allRoles = [];
-    $.each($("select[name='addRoles'] option:selected"), function () {
-        let role = {};
-        role.id = $(this).attr('id');
-        role.name = $(this).attr('name');
-        allRoles.push(role);
-        console.log("role: " + JSON.stringify(role));
-    });
-    return allRoles;
-}
-
 function addNewUser() {
     let user = {
-        'firstName': $('#addFirstName').val(),
-        'lastName': $('#addLastName').val(),
-        'age': $('#addAge').val(),
-        'email': $('#addEmail').val(),
-        'passwordUser': $('#addPasswordUser').val(),
-        'roles': userRoles.map(role => role.id)
+        firstName: $('#addFirstName').val(),
+        lastName: $('#addLastName').val(),
+        age: parseInt($('#addAge').val()),
+        email: $('#addEmail').val(),
+        passwordUser: $('#addPasswordUser').val(),
+        roles: $('#addRole').val().map(id => parseInt(id))
     }
+
+    console.log(user);
 
     fetch("/api/users", {
         method: "POST", dataType: 'json',
@@ -72,9 +62,10 @@ function addNewUser() {
         .then((response) => {
             response.json().then((addUser) => {
                 console.log(addUser)
+                userInfo.empty()
+                getAllUser()
             })
-            userInfo.empty()
-            getAllUser()
+            $('#usersTableActive').tab('show');
         })
 }
 
@@ -97,21 +88,23 @@ function editUserById(id) {
 
 function editButton() {
     let editUser = {
-        'id': $("input[name='id']").val(),
-        'firstName': $("input[name='firstName']").val(),
-        'lastName': $("input[name='lastName']").val(),
-        'age': $("input[name='age']").val(),
-        'email': $("input[name='email']").val(),
-        'passwordUser': $("input[name='passwordUser']").val(),
-        'roles': $("input[name='checkBoxRoles']").val()
+        id: $("input[name='id']").val(),
+        firstName: $("input[name='firstName']").val(),
+        lastName: $("input[name='lastName']").val(),
+        age: $("input[name='age']").val(),
+        email: $("input[name='email']").val(),
+        passwordUser: $("input[name='passwordUser']").val(),
+        roles: $("input[name='checkBoxRoles']").val()
     }
+
+    console.log(editUser);
 
     fetch("/api/users", {
         method: "PUT", dataType: 'json',
         contentType: 'application/json; charset=utf-8', data: JSON.stringify(editUser)
     })
         .then((response) => {
-            response.json().then(() => {
+            response.json().then((user) => {
                 userInfo.empty();
                 getAllUser();
             })

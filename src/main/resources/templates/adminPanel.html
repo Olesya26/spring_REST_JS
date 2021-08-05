@@ -137,7 +137,7 @@
                                 <br>
                                 <label>Role
                                     <select class="form-control form-control-sm" size="2"  name="checkBoxRoles"
-                                            id="addRole" style="max-height: 42px">
+                                            id="addRole" style="max-height: 42px" multiple>
                                         <option th:each="role : ${roles}"
                                                 th:value="${role.getId()}"
                                                 th:text="${role.getName()}">
@@ -145,7 +145,7 @@
                                     </select>
                                 </label>
                                 <br>
-                                <button class="btn btn-success" onclick="addNewUser()">Add new user</button>
+                                <button type="button" class="btn btn-success" onclick="addNewUser()">Add new user</button>
                             </div>
                         </form>
                     </div>
@@ -198,8 +198,8 @@
                                                                 </label>
                                                                 <br>
                                                                 <label>Role
-                                                                <select class="form-control form-control-sm" size="2" name="checkBoxRoles"
-                                                                id="editRole">
+                                                                <select class="form-control form-control-sm" size="2"
+                                                                        name="checkBoxRoles" id="editRole" multiple>
                                                                     <option th:each="role : ${roles}"
                                                                             th:value="${role.getId()}"
                                                                             th:text="${role.getName()}">
